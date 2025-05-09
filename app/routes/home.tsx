@@ -5,8 +5,8 @@ import styles from './home.module.css';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Chicago Institute of Art" },
+    { name: "description", content: "Chicago Institute of Art" },
   ];
 }
 
