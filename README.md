@@ -2,6 +2,8 @@
 
 Coding challenge for Disco featuring art from Art Institute of Chicago.
 
+🚀 Deployed via Vercel: https://aic-redux-app.vercel.app/
+
 ## Getting Started
 
 ### Installation
