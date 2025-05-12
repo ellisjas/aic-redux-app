@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import artworkReducer from './artworkSlice'
+import artworkReducer from '~/features/artwork/artworkSlice'
 
 export const store = configureStore({
   reducer: {
