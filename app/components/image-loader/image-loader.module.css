@@ -1,0 +1,5 @@
+.image {
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: opacity 0.5s ease;
+}

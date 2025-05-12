@@ -3,6 +3,7 @@ import { store } from '~/store/store'
 import styles from './artwork.module.css'
 import { Link } from 'react-router'
 import { getArtworkById } from '~/api/getArtwork'
+import ImageLoader, { ImageSize } from '~/components/image-loader/image-loader'
 
 export async function loader({ params }: Route.LoaderArgs) {
   const artworkId = params.artworkId
@@ -29,12 +30,12 @@ export default function Artwork({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className={styles.container}>
-      {image_id && (
-        <img
-          src={`https://www.artic.edu/iiif/2/${image_id}/full/843,/0/default.jpg`}
-          alt={title}
-        />
-      )}
+      <ImageLoader
+        imageId={image_id}
+        thumbnail={artworkItem.thumbnail.lqip}
+        alt={title}
+        size={ImageSize.LARGE}
+      />
       <h2>{title}</h2>
       <h3>{artist_title}</h3>
       <Link to="/" className={styles.backLink}>
