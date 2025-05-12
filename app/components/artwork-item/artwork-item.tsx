@@ -1,25 +1,38 @@
-import { Link } from 'react-router';
-import type { Artwork } from '~/types';
-import styles from './artwork-item.module.css';
+import { Link } from 'react-router'
+import type { ArtworkData } from '~/types'
+import styles from './artwork-item.module.css'
+import { useEffect, useState } from 'react'
 
 type ArtworkItemProps = {
-  artwork: Artwork;
+  artwork: ArtworkData
 }
 
+const IIIF_IMAGE_URL = 'https://www.artic.edu/iiif/2'
+
 function ArtworkItem({ artwork }: ArtworkItemProps) {
-  const imageUrl = artwork.image_id
-    ? `https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`
-    : 'https://via.placeholder.com/150';
+  const [imageSrc, setImageSrc] = useState(artwork.thumbnail.lqip)
+
+  const fullImageUrl = `${IIIF_IMAGE_URL}/${artwork.image_id}/full/843,/0/default.jpg`
+
+  useEffect(() => {
+    if (artwork.image_id) {
+      const img = new Image()
+      img.src = fullImageUrl
+      img.onload = () => {
+        setImageSrc(fullImageUrl)
+      }
+    }
+  }, [artwork.image_id])
 
   return (
     <Link to={`/artwork/${artwork.id}`} className={styles.container}>
-      <img src={imageUrl} alt={artwork.title} className={styles.image} />
+      <img src={imageSrc} alt={artwork.title} className={styles.image} />
       <div className={styles.content}>
         <h2 className={styles.title}>{artwork.title}</h2>
         <p className={styles.artist}>{artwork.artist_display}</p>
       </div>
     </Link>
-  );
+  )
 }
 
-export default ArtworkItem;
+export default ArtworkItem

@@ -1,10 +1,10 @@
-.artworkGrid {
+.container {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
 }
 
-.artworkGrid > * {
+.container > * {
   flex: 0 0 calc(33.333% - 0.667rem);
 }
