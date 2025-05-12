@@ -3,12 +3,20 @@
   flex-direction: column;
   overflow: hidden;
   width: 100%;
+
+  &:hover,
+  &:active {
+    .image {
+      opacity: 0.8;
+    }
+  }
 }
 
 .image {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
+  transition: opacity 0.5s ease;
 }
 
 .content {
@@ -22,5 +30,5 @@
 }
 
 .artist {
-  color: rgb(75 85 99);
+  color: rgb(164, 165, 165);
 }
