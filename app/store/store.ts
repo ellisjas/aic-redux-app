@@ -1,5 +1,5 @@
-import { configureStore, type Action, type ThunkAction } from '@reduxjs/toolkit'
-import artworkReducer from './artworkSlice'
+import { configureStore } from '@reduxjs/toolkit'
+import artworkReducer from '~/features/artwork/artworkSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,4 +10,3 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>

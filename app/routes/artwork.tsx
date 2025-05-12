@@ -1,51 +1,43 @@
-import { useSelector, useDispatch } from 'react-redux'
 import type { Route } from './+types/artwork'
-import type { AppDispatch, RootState } from '~/store/store'
-import {
-  fetchArtworkById,
-  selectArtworkById,
-  selectArtworkStatus,
-} from '~/store/artworkSlice'
+import { store } from '~/store/store'
 import styles from './artwork.module.css'
 import { Link } from 'react-router'
-import { useEffect } from 'react'
+import { getArtworkById } from '~/api/getArtwork'
+import ImageLoader, { ImageSize } from '~/components/image-loader/image-loader'
 
-export default function Artwork({ params }: Route.ComponentProps) {
+export async function loader({ params }: Route.LoaderArgs) {
+  const artworkId = params.artworkId
+  return await getArtworkById(artworkId)
+}
+
+export function clientLoader({ params }: Route.ClientLoaderArgs) {
   const artworkId = Number(params.artworkId)
-  const dispatch = useDispatch<AppDispatch>()
+  return store
+    .getState()
+    .artwork.items.find((artwork) => artwork.id === artworkId)
+}
 
-  const artwork = useSelector((state: RootState) =>
-    selectArtworkById(state, artworkId),
-  )
-  const status = useSelector(selectArtworkStatus)
+export function HydrateFallback() {
+  return <div>Loading...</div>
+}
 
-  useEffect(() => {
-    if (status === 'idle' && !artwork) {
-      dispatch(fetchArtworkById(artworkId))
-    }
-  }, [dispatch, artworkId, status])
+export default function Artwork({ loaderData }: Route.ComponentProps) {
+  const artworkItem = loaderData
 
-  switch (status) {
-    case 'idle':
-      return <div>Loading...</div>
-    case 'pending':
-      return <div>Loading...</div>
-    case 'failed':
-      return <div>Error loading artwork</div>
-  }
+  if (!artworkItem) return <div>Artwork not found</div>
 
-  if (!artwork) return <div>Artwork not found</div>
+  const { image_id, title, artist_title } = artworkItem
 
   return (
     <div className={styles.container}>
-      {artwork.image_id && (
-        <img
-          src={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`}
-          alt={artwork.title}
-        />
-      )}
-      <h2>{artwork.title}</h2>
-      <h3>{artwork.artist_title}</h3>
+      <ImageLoader
+        imageId={image_id}
+        thumbnail={artworkItem.thumbnail.lqip}
+        alt={title}
+        size={ImageSize.LARGE}
+      />
+      <h2>{title}</h2>
+      <h3>{artist_title}</h3>
       <Link to="/" className={styles.backLink}>
         ← Back
       </Link>
